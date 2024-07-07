@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <appid></appid>
+    <client_secret></client_secret>
+    <auth_url>https://bots.qq.com/app/getAppAccessToken</auth_url>
+    <sandbox>https://sandbox.api.sgroup.qq.com</sandbox>
+    <spark>
+        <SPARKAI_APP_ID></SPARKAI_APP_ID>
+        <SPARKAI_API_SECRET></SPARKAI_API_SECRET>
+        <SPARKAI_API_KEY></SPARKAI_API_KEY>
+    </spark>
+</config>
