@@ -19,12 +19,12 @@ func InitConfig() {
 	}
 	fmt.Println("==========get access token success============")
 	var err error
-	GAccessCfg.WssURL, err = GetWssUrl(QQService.SandBoxURL+"/gateway", QQService.AppId, GAccessCfg.AccessToken.Token)
+	GAccessCfg.WssURL, err = GetWssUrl(RemoteSrv.SandBoxURL+"/gateway", RemoteSrv.AppId, GAccessCfg.AccessToken.Token)
 	if err != nil {
 		log.Fatal("init access token err")
 	}
 	fmt.Println("====================get wss url success")
-	fmt.Println(QQService)
+	fmt.Println(RemoteSrv)
 	fmt.Println(GAccessCfg)
 }
 

@@ -14,14 +14,21 @@ type GAccessConfig struct {
 	WssURL      string
 }
 
-type QQServer struct {
+type Server struct {
 	SandBoxURL   string `xml:"sandbox"`
 	AuthUrl      string `xml:"auth_url"`
 	AppId        string `xml:"appid"`
 	ClientSecret string `xml:"client_secret"`
+	Spark        Spark  `xml:"spark"`
 }
 
-var QQService QQServer
+type Spark struct {
+	SparkAIAppID     string `xml:"SPARKAI_APP_ID"`
+	SparkAIAPISecret string `xml:"SPARKAI_API_SECRET"`
+	SparkAIAPIKey    string `xml:"SPARKAI_API_KEY"`
+}
+
+var RemoteSrv Server
 
 var GAccessCfg GAccessConfig
 
@@ -39,7 +46,7 @@ func ReadConfig(path string) error {
 	}
 
 	// 解析XML到Server结构体
-	err = xml.Unmarshal(data, &QQService)
+	err = xml.Unmarshal(data, &RemoteSrv)
 	if err != nil {
 		return err
 	}
@@ -48,7 +55,7 @@ func ReadConfig(path string) error {
 
 func InitAccessToken() error {
 	var err error
-	GAccessCfg.AccessToken, err = GetAccessToken(QQService.AuthUrl, QQService.AppId, QQService.ClientSecret)
+	GAccessCfg.AccessToken, err = GetAccessToken(RemoteSrv.AuthUrl, RemoteSrv.AppId, RemoteSrv.ClientSecret)
 	if err != nil {
 		return err
 	}
@@ -65,7 +72,7 @@ func RefreshAccessToken() {
 		ticker := time.NewTicker(time.Second * time.Duration(duration-50))
 
 		<-ticker.C
-		GAccessCfg.AccessToken, err = GetAccessToken(QQService.AuthUrl, QQService.AppId, QQService.ClientSecret)
+		GAccessCfg.AccessToken, err = GetAccessToken(RemoteSrv.AuthUrl, RemoteSrv.AppId, RemoteSrv.ClientSecret)
 		if err != nil {
 			fmt.Println(err.Error())
 			// return
