@@ -23,7 +23,7 @@ func GetSparkResp(msg string) (string, error) {
 		"messages": []map[string]string{{"role": "user", "content": "1.假装你是一个叫作leaf的智者；2.回复控制在50字以内 。问：\n" + msg}},
 	}
 	header := map[string]string{
-		"Authorization": "Bearer " + RemoteSrv.Spark.SPARKAI_API_KEY + ":" + RemoteSrv.Spark.SPARKAI_API_SECRET, // 注意此处替换自己的key和secret
+		"Authorization": "Bearer " + RemoteSrv.Spark.SparkAIAPIKey + ":" + RemoteSrv.Spark.SparkAIAPISecret, // 注意此处替换自己的key和secret
 	}
 
 	jsonData, err := json.Marshal(data)

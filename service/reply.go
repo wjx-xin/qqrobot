@@ -41,7 +41,7 @@ func Reply(msg *model.MessageData) {
 	requestBodyJson, _ := json.Marshal(requestBody)
 
 	// 创建HTTP请求
-	url := QQService.SandBoxURL + "/channels/" + channelId + "/messages"
+	url := RemoteSrv.SandBoxURL + "/channels/" + channelId + "/messages"
 	// url := https://api.q.qq.com/v2/channels/
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBodyJson))
 	if err != nil {

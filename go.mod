@@ -1,6 +1,6 @@
 module robot
 
-go 1.21.5
+go 1.23
 
 require (
 	github.com/gin-gonic/gin v1.10.0
