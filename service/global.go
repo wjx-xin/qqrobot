@@ -32,6 +32,8 @@ var RemoteSrv Server
 
 var GAccessCfg GAccessConfig
 
+var GSparkClient SparkClient
+
 func ReadConfig(path string) error {
 	xmlFile, err := os.Open(path)
 	if err != nil {

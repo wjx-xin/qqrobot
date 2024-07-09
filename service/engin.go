@@ -28,6 +28,12 @@ func InitConfig() {
 	}
 	slog.Info("get wss url success")
 
+	GSparkClient = *NewSparkClient(
+		RemoteSrv.Spark.SparkAIAppID,
+		RemoteSrv.Spark.SparkAIAPIKey,
+		RemoteSrv.Spark.SparkAIAPISecret,
+		"https://spark-api-open.xf-yun.com/v1/chat/completions",
+	)
 }
 
 func StartEngine() {

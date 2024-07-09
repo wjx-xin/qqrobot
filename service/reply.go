@@ -30,7 +30,7 @@ func Reply(msg *model.MessageData) {
 
 	// 构造请求体
 	// var inferData = ""
-	inferData, err := GetSparkResp(content)
+	inferData, err := GSparkClient.Infer(content)
 
 	if err != nil {
 		slog.Error("============ err in spark==========")

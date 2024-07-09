@@ -6,10 +6,10 @@ import (
 )
 
 func TestSpark(t *testing.T) {
-	resp, err := GetSparkResp("说一个成语")
+	client := NewSparkClient("", "", "", "")
+	res, err := client.Infer("你好，今晚夜色很美")
 	if err != nil {
-		fmt.Println("============ err in test spark ===============")
+		fmt.Println(err.Error())
 	}
-	fmt.Println(resp)
-
+	fmt.Println(res)
 }
