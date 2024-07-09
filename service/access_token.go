@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 )
 
@@ -37,7 +38,7 @@ func GetAccessToken(url string, appId string, clientSecret string) (AccessToken,
 	// 发送请求并获取响应
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
+		slog.Error("Error sending request:", err)
 		return token, err
 	}
 	defer resp.Body.Close()
@@ -45,10 +46,10 @@ func GetAccessToken(url string, appId string, clientSecret string) (AccessToken,
 	// 读取响应体内容
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		slog.Error("Error reading response body:", err)
 		return token, err
 	}
-	fmt.Println("Response:", string(bodyBytes))
+	slog.Info("Response:", string(bodyBytes))
 	if err := json.Unmarshal(bodyBytes, &token); err != nil {
 		return token, err
 	}

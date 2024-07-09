@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 )
 
@@ -28,13 +28,13 @@ func GetSparkResp(msg string) (string, error) {
 
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println("Error marshaling data:", err)
+		slog.Error("Error marshaling data:", err)
 		return "", err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		slog.Error("Error creating request:", err)
 		return "", err
 	}
 
@@ -45,14 +45,14 @@ func GetSparkResp(msg string) (string, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
+		slog.Error("Error sending request:", err)
 		return "", err
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		slog.Error("Error reading response body:", err)
 		return "", err
 	}
 
@@ -60,7 +60,7 @@ func GetSparkResp(msg string) (string, error) {
 	if err := json.Unmarshal(body, &m); err != nil {
 		return "", err
 	}
-	fmt.Println(m)
+	// slog.Error(m)
 	choices, ok := m["choices"].([]interface{})
 	if !ok || len(choices) == 0 {
 		return "", errors.New("err in spark reply")

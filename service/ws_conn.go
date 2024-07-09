@@ -2,9 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -44,7 +44,7 @@ func WssAuth(conn *websocket.Conn) {
 			Properties: nil,
 		},
 	}
-	// fmt.Println(json.Marshal(&data))
+	// slog.Error(json.Marshal(&data))
 	err := conn.WriteJSON(&data)
 	if err != nil {
 		log.Println("write:", err)
@@ -71,7 +71,7 @@ func WssConn(url string) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Println("wss: Error creating request:", err)
+		slog.Error("wss: Error creating request:", err)
 		return
 	}
 
@@ -98,7 +98,7 @@ func WssConn(url string) {
 
 			var msgData model.MessageData
 			if err := json.Unmarshal(message, &msgData); err != nil {
-				fmt.Println(err)
+				slog.Error(err.Error())
 			}
 			atomic.StoreInt64(&MsgS, int64(msgData.Sequence))
 			if msgData.Type == "AT_MESSAGE_CREATE" {
@@ -144,7 +144,7 @@ func GetWssUrl(url string, appId string, accessToken string) (string, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		slog.Error("Error creating request:", err)
 		return "", err
 	}
 
@@ -159,7 +159,7 @@ func GetWssUrl(url string, appId string, accessToken string) (string, error) {
 	// 发送请求并获取响应
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
+		slog.Error("Error sending request:", err)
 		return "", err
 	}
 	defer resp.Body.Close()
@@ -167,7 +167,7 @@ func GetWssUrl(url string, appId string, accessToken string) (string, error) {
 	// 读取响应体内容
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		slog.Error("Error reading response body:", err)
 		return "", err
 	}
 
@@ -179,6 +179,6 @@ func GetWssUrl(url string, appId string, accessToken string) (string, error) {
 	if err := json.Unmarshal(bodyBytes, &urlResp); err != nil {
 		return "", err
 	}
-	fmt.Println("Response:", string(bodyBytes))
+	slog.Info("Response:", string(bodyBytes))
 	return urlResp.Url, nil
 }

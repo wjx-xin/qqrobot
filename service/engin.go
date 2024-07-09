@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"log"
+	"log/slog"
 )
 
 // 1.登录 获取accsess_token 并存储，增加定时事件，过期前60s刷新
@@ -10,22 +11,23 @@ import (
 // 2.创建wss连接
 
 func InitConfig() {
+	slog.SetLogLoggerLevel(slog.LevelInfo)
 	if err := ReadConfig("./config/config.xml"); err != nil {
 		log.Fatal("InitConfig failed")
 	}
-	fmt.Println("===========read config success ===========")
+
+	slog.Info("read config success ")
 	if err := InitAccessToken(); err != nil {
 		log.Fatal("init access token err")
 	}
-	fmt.Println("==========get access token success============")
+	slog.Info("get access token success")
 	var err error
 	GAccessCfg.WssURL, err = GetWssUrl(RemoteSrv.SandBoxURL+"/gateway", RemoteSrv.AppId, GAccessCfg.AccessToken.Token)
 	if err != nil {
 		log.Fatal("init access token err")
 	}
-	fmt.Println("====================get wss url success")
-	fmt.Println(RemoteSrv)
-	fmt.Println(GAccessCfg)
+	slog.Info("get wss url success")
+
 }
 
 func StartEngine() {
